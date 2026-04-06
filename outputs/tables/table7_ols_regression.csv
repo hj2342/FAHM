@@ -1,0 +1,9 @@
+Variable,Model 1 (Bivariate),Model 2 (+ Controls),Model 3 (Full)
+const,930.408***,1198.284***,1252.442***
+origin_pressure,1.023,1.109,1.072
+player_age,—,-10.691***,-10.687***
+log_market_value,—,1.027,-3.451
+log_transfer_fee,—,—,1.525
+nat_match,—,—,-13.612*
+Adj. R²,-0.0000,0.0151,0.0154
+N,"15,000","15,000","15,000"

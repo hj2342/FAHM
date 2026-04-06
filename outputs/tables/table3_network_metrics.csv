@@ -1,0 +1,8 @@
+league,in_degree,out_degree,net_flow,betweenness,pagerank,clustering_coef,pressure_index,pressure_source
+Ligue 1,388,459,-71,0.3,0.0605,0.1258,20.816,statsbomb
+EPL,1072,734,338,0.1667,0.3972,0.2027,21.332,statsbomb
+Eredivisie,159,364,-205,0.1,0.0315,0.1049,19.8,estimated
+La Liga,400,668,-268,0.1,0.0536,0.1458,20.272,statsbomb
+Bundesliga,273,603,-330,0.0667,0.0436,0.1219,22.5,estimated
+Serie A,322,517,-195,0.0333,0.0464,0.1225,21.191,statsbomb
+Championship,991,260,731,0.0,0.3671,0.1456,25.1,estimated

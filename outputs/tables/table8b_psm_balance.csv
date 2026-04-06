@@ -1,0 +1,4 @@
+Covariate,SMD_before,SMD_after,balanced
+player_age,0.0191,0.0099,True
+log_market_value,0.0169,0.0106,True
+nat_match,0.004,0.0032,True

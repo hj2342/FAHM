@@ -1,0 +1,33 @@
+
+================================================================================
+MIGRATION HUBS & TALENT PIPELINES — RESULTS SUMMARY
+CS-UH 2219E · Computational Social Science · NYUAD · Spring 2026
+================================================================================
+
+DATA MODE: REAL
+
+SCOPE (Real Mode)
+  Source 1: Transfermarkt via ewenme/transfers (Big-5 leagues, 2017–2022)
+  Source 2: StatsBomb Open Data (La Liga, Bundesliga, Ligue 1 event-level)
+  Pressure values: 3 leagues = StatsBomb-derived; others = [ESTIMATED]
+
+DATASET
+  Records:        15,000
+  Unique players: 15,000
+  Dest leagues:   8
+  Seasons:        5
+
+HYPOTHESIS TEST (OLS — Full Model, clustered SEs by dest_league)
+  β(origin_pressure) = 1.0717
+  p-value            = 0.3803
+  Adj. R²            = 0.0154
+  Verdict:           ✗ pressure_index NOT significant at p<0.05
+
+CAUSAL INFERENCE (PSM — paired t-test, 1:1 NN, caliper=0.2×SD(logit PS))
+  ATT = -31.16 min (Bootstrap SE = 7.44)
+
+OUTPUTS
+  Figures : outputs/figures/  (8 PNG files)
+  Tables  : outputs/tables/   (8 CSV files)
+  Summary : outputs/results_summary.txt
+================================================================================

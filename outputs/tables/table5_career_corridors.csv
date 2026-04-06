@@ -1,0 +1,173 @@
+career_path,n_players,is_ascending,path_str,pressure_gain
+"('EPL', 'EPL', 'Championship')",60,True,EPL → EPL → Championship,3.7680000000000007
+"('La Liga', 'La Liga', 'EPL')",27,True,La Liga → La Liga → EPL,1.0600000000000023
+"('Ligue 1', 'Ligue 1', 'EPL')",25,True,Ligue 1 → Ligue 1 → EPL,0.5160000000000018
+"('Bundesliga', 'Bundesliga', 'EPL')",21,False,Bundesliga → Bundesliga → EPL,-1.1679999999999993
+"('Serie A', 'Serie A', 'EPL')",20,True,Serie A → Serie A → EPL,0.1410000000000018
+"('Championship', 'EPL', 'Championship')",18,False,Championship → EPL → Championship,0.0
+"('Eredivisie', 'Eredivisie', 'Championship')",16,True,Eredivisie → Eredivisie → Championship,5.300000000000001
+"('Serie A', 'Serie A', 'La Liga')",15,False,Serie A → Serie A → La Liga,-0.9190000000000005
+"('Bundesliga', 'Bundesliga', 'Championship')",14,True,Bundesliga → Bundesliga → Championship,2.6000000000000014
+"('La Liga', 'La Liga', 'Serie A')",14,True,La Liga → La Liga → Serie A,0.9190000000000005
+"('Ligue 1', 'Ligue 1', 'Championship')",14,True,Ligue 1 → Ligue 1 → Championship,4.2840000000000025
+"('La Liga', 'La Liga', 'Championship')",12,True,La Liga → La Liga → Championship,4.828000000000003
+"('Eredivisie', 'Eredivisie', 'EPL')",12,True,Eredivisie → Eredivisie → EPL,1.532
+"('Ligue 1', 'Ligue 1', 'Serie A')",11,True,Ligue 1 → Ligue 1 → Serie A,0.375
+"('La Liga', 'La Liga', 'Ligue 1')",11,True,La Liga → La Liga → Ligue 1,0.5440000000000005
+"('La Liga', 'Serie A', 'La Liga')",10,False,La Liga → Serie A → La Liga,0.0
+"('Serie A', 'Serie A', 'Ligue 1')",10,False,Serie A → Serie A → Ligue 1,-0.375
+"('Bundesliga', 'Bundesliga', 'Ligue 1')",9,False,Bundesliga → Bundesliga → Ligue 1,-1.684000000000001
+"('Bundesliga', 'Bundesliga', 'Serie A')",8,False,Bundesliga → Bundesliga → Serie A,-1.309000000000001
+"('Bundesliga', 'Bundesliga', 'La Liga')",8,False,Bundesliga → Bundesliga → La Liga,-2.2280000000000015
+"('Ligue 1', 'Ligue 1', 'La Liga')",7,False,Ligue 1 → Ligue 1 → La Liga,-0.5440000000000005
+"('Eredivisie', 'Eredivisie', 'Bundesliga')",7,True,Eredivisie → Eredivisie → Bundesliga,2.6999999999999993
+"('Ligue 1', 'La Liga', 'Ligue 1')",7,False,Ligue 1 → La Liga → Ligue 1,0.0
+"('Ligue 1', 'Bundesliga', 'Ligue 1')",7,False,Ligue 1 → Bundesliga → Ligue 1,0.0
+"('Serie A', 'Serie A', 'Championship')",7,True,Serie A → Serie A → Championship,3.9090000000000025
+"('Serie A', 'La Liga', 'Serie A')",6,False,Serie A → La Liga → Serie A,0.0
+"('La Liga', 'La Liga', 'Bundesliga')",6,True,La Liga → La Liga → Bundesliga,2.2280000000000015
+"('Championship', 'Championship', 'EPL')",6,False,Championship → Championship → EPL,-3.7680000000000007
+"('Eredivisie', 'Eredivisie', 'La Liga')",5,True,Eredivisie → Eredivisie → La Liga,0.47199999999999775
+"('Eredivisie', 'Eredivisie', 'Serie A')",5,True,Eredivisie → Eredivisie → Serie A,1.3909999999999982
+"('Bundesliga', 'Ligue 1', 'Bundesliga')",5,False,Bundesliga → Ligue 1 → Bundesliga,0.0
+"('Eredivisie', 'Eredivisie', 'Bundesliga', 'Eredivisie')",5,False,Eredivisie → Eredivisie → Bundesliga → Eredivisie,0.0
+"('Ligue 1', 'Ligue 1', 'Bundesliga', 'Ligue 1')",5,False,Ligue 1 → Ligue 1 → Bundesliga → Ligue 1,0.0
+"('Bundesliga', 'Bundesliga', 'Eredivisie')",5,False,Bundesliga → Bundesliga → Eredivisie,-2.6999999999999993
+"('Eredivisie', 'La Liga', 'Eredivisie')",4,False,Eredivisie → La Liga → Eredivisie,0.0
+"('La Liga', 'Bundesliga', 'La Liga', 'Bundesliga')",4,False,La Liga → Bundesliga → La Liga → Bundesliga,2.2280000000000015
+"('Ligue 1', 'Ligue 1', 'La Liga', 'Ligue 1')",4,False,Ligue 1 → Ligue 1 → La Liga → Ligue 1,0.0
+"('EPL', 'Championship', 'EPL')",4,False,EPL → Championship → EPL,0.0
+"('Ligue 1', 'Ligue 1', 'Bundesliga')",4,True,Ligue 1 → Ligue 1 → Bundesliga,1.684000000000001
+"('Ligue 1', 'Serie A', 'Ligue 1')",4,False,Ligue 1 → Serie A → Ligue 1,0.0
+"('Ligue 1', 'La Liga', 'EPL')",3,False,Ligue 1 → La Liga → EPL,0.5160000000000018
+"('Eredivisie', 'Eredivisie', 'Bundesliga', 'EPL')",3,False,Eredivisie → Eredivisie → Bundesliga → EPL,1.532
+"('Ligue 1', 'EPL', 'Championship')",3,True,Ligue 1 → EPL → Championship,4.2840000000000025
+"('Bundesliga', 'La Liga', 'Bundesliga')",3,False,Bundesliga → La Liga → Bundesliga,0.0
+"('Serie A', 'Bundesliga', 'Serie A')",3,False,Serie A → Bundesliga → Serie A,0.0
+"('Bundesliga', 'Eredivisie', 'Bundesliga', 'Eredivisie')",3,False,Bundesliga → Eredivisie → Bundesliga → Eredivisie,-2.6999999999999993
+"('Bundesliga', 'Eredivisie', 'Bundesliga')",3,False,Bundesliga → Eredivisie → Bundesliga,0.0
+"('La Liga', 'Ligue 1', 'La Liga')",3,False,La Liga → Ligue 1 → La Liga,0.0
+"('Bundesliga', 'Bundesliga', 'La Liga', 'Bundesliga')",3,False,Bundesliga → Bundesliga → La Liga → Bundesliga,0.0
+"('La Liga', 'La Liga', 'Serie A', 'La Liga')",3,False,La Liga → La Liga → Serie A → La Liga,0.0
+"('Ligue 1', 'Eredivisie', 'Ligue 1')",3,False,Ligue 1 → Eredivisie → Ligue 1,0.0
+"('Serie A', 'Serie A', 'Bundesliga', 'Serie A')",2,False,Serie A → Serie A → Bundesliga → Serie A,0.0
+"('Ligue 1', 'Ligue 1', 'Serie A', 'Ligue 1')",2,False,Ligue 1 → Ligue 1 → Serie A → Ligue 1,0.0
+"('Eredivisie', 'Eredivisie', 'Ligue 1')",2,True,Eredivisie → Eredivisie → Ligue 1,1.0159999999999982
+"('Ligue 1', 'EPL', 'Ligue 1')",2,False,Ligue 1 → EPL → Ligue 1,0.0
+"('Serie A', 'Serie A', 'Bundesliga')",2,True,Serie A → Serie A → Bundesliga,1.309000000000001
+"('Eredivisie', 'Eredivisie', 'La Liga', 'Eredivisie')",2,False,Eredivisie → Eredivisie → La Liga → Eredivisie,0.0
+"('Bundesliga', 'Bundesliga', 'Eredivisie', 'Bundesliga')",2,False,Bundesliga → Bundesliga → Eredivisie → Bundesliga,0.0
+"('La Liga', 'EPL', 'Championship')",2,True,La Liga → EPL → Championship,4.828000000000003
+"('La Liga', 'EPL', 'La Liga')",2,False,La Liga → EPL → La Liga,0.0
+"('Bundesliga', 'La Liga', 'Serie A')",2,False,Bundesliga → La Liga → Serie A,-1.309000000000001
+"('La Liga', 'Serie A', 'La Liga', 'Serie A')",2,False,La Liga → Serie A → La Liga → Serie A,0.9190000000000005
+"('La Liga', 'La Liga', 'Bundesliga', 'La Liga')",2,False,La Liga → La Liga → Bundesliga → La Liga,0.0
+"('Bundesliga', 'EPL', 'Bundesliga')",2,False,Bundesliga → EPL → Bundesliga,0.0
+"('Bundesliga', 'Bundesliga', 'EPL', 'Ligue 1')",2,False,Bundesliga → Bundesliga → EPL → Ligue 1,-1.684000000000001
+"('La Liga', 'Serie A', 'Ligue 1')",2,False,La Liga → Serie A → Ligue 1,0.5440000000000005
+"('La Liga', 'La Liga', 'Eredivisie')",2,False,La Liga → La Liga → Eredivisie,-0.47199999999999775
+"('Bundesliga', 'Ligue 1', 'EPL')",2,False,Bundesliga → Ligue 1 → EPL,-1.1679999999999993
+"('Eredivisie', 'Eredivisie', 'Bundesliga', 'Championship')",2,True,Eredivisie → Eredivisie → Bundesliga → Championship,5.300000000000001
+"('Serie A', 'Serie A', 'Eredivisie')",2,False,Serie A → Serie A → Eredivisie,-1.3909999999999982
+"('Eredivisie', 'EPL', 'Eredivisie')",2,False,Eredivisie → EPL → Eredivisie,0.0
+"('Ligue 1', 'Ligue 1', 'Eredivisie')",2,False,Ligue 1 → Ligue 1 → Eredivisie,-1.0159999999999982
+"('Ligue 1', 'Ligue 1', 'La Liga', 'Bundesliga')",1,False,Ligue 1 → Ligue 1 → La Liga → Bundesliga,1.684000000000001
+"('Ligue 1', 'Ligue 1', 'Bundesliga', 'Ligue 1', 'Bundesliga', 'Ligue 1')",1,False,Ligue 1 → Ligue 1 → Bundesliga → Ligue 1 → Bundesliga → Ligue 1,0.0
+"('Serie A', 'Bundesliga', 'Serie A', 'Bundesliga', 'Ligue 1')",1,False,Serie A → Bundesliga → Serie A → Bundesliga → Ligue 1,-0.375
+"('La Liga', 'Serie A', 'La Liga', 'Serie A', 'EPL')",1,False,La Liga → Serie A → La Liga → Serie A → EPL,1.0600000000000023
+"('Ligue 1', 'Ligue 1', 'EPL', 'Ligue 1')",1,False,Ligue 1 → Ligue 1 → EPL → Ligue 1,0.0
+"('Serie A', 'Bundesliga', 'La Liga')",1,False,Serie A → Bundesliga → La Liga,-0.9190000000000005
+"('La Liga', 'Serie A', 'Championship')",1,True,La Liga → Serie A → Championship,4.828000000000003
+"('Ligue 1', 'Bundesliga', 'EPL')",1,False,Ligue 1 → Bundesliga → EPL,0.5160000000000018
+"('Serie A', 'Serie A', 'La Liga', 'Serie A', 'La Liga', 'Serie A')",1,False,Serie A → Serie A → La Liga → Serie A → La Liga → Serie A,0.0
+"('Serie A', 'Bundesliga', 'EPL')",1,False,Serie A → Bundesliga → EPL,0.1410000000000018
+"('La Liga', 'Ligue 1', 'La Liga', 'Ligue 1')",1,False,La Liga → Ligue 1 → La Liga → Ligue 1,0.5440000000000005
+"('Ligue 1', 'Ligue 1', 'La Liga', 'Ligue 1', 'La Liga')",1,False,Ligue 1 → Ligue 1 → La Liga → Ligue 1 → La Liga,-0.5440000000000005
+"('Ligue 1', 'Serie A', 'La Liga', 'Ligue 1')",1,False,Ligue 1 → Serie A → La Liga → Ligue 1,0.0
+"('Ligue 1', 'Ligue 1', 'Serie A', 'EPL')",1,True,Ligue 1 → Ligue 1 → Serie A → EPL,0.5160000000000018
+"('Ligue 1', 'Ligue 1', 'Bundesliga', 'Ligue 1', 'Bundesliga')",1,False,Ligue 1 → Ligue 1 → Bundesliga → Ligue 1 → Bundesliga,1.684000000000001
+"('Serie A', 'La Liga', 'Championship')",1,False,Serie A → La Liga → Championship,3.9090000000000025
+"('Ligue 1', 'Bundesliga', 'Eredivisie')",1,False,Ligue 1 → Bundesliga → Eredivisie,-1.0159999999999982
+"('Ligue 1', 'EPL', 'Ligue 1', 'EPL', 'La Liga')",1,False,Ligue 1 → EPL → Ligue 1 → EPL → La Liga,-0.5440000000000005
+"('Ligue 1', 'La Liga', 'Ligue 1', 'La Liga', 'Serie A', 'Ligue 1')",1,False,Ligue 1 → La Liga → Ligue 1 → La Liga → Serie A → Ligue 1,0.0
+"('Serie A', 'La Liga', 'Ligue 1')",1,False,Serie A → La Liga → Ligue 1,-0.375
+"('Serie A', 'Eredivisie', 'Bundesliga')",1,False,Serie A → Eredivisie → Bundesliga,1.309000000000001
+"('Ligue 1', 'Eredivisie', 'La Liga', 'Eredivisie')",1,False,Ligue 1 → Eredivisie → La Liga → Eredivisie,-1.0159999999999982
+"('Serie A', 'EPL', 'La Liga')",1,False,Serie A → EPL → La Liga,-0.9190000000000005
+"('Ligue 1', 'Eredivisie', 'Bundesliga')",1,False,Ligue 1 → Eredivisie → Bundesliga,1.684000000000001
+"('Serie A', 'Ligue 1', 'EPL')",1,False,Serie A → Ligue 1 → EPL,0.1410000000000018
+"('Serie A', 'La Liga', 'EPL')",1,False,Serie A → La Liga → EPL,0.1410000000000018
+"('Ligue 1', 'La Liga', 'Serie A', 'La Liga', 'Serie A', 'Championship')",1,False,Ligue 1 → La Liga → Serie A → La Liga → Serie A → Championship,4.2840000000000025
+"('Ligue 1', 'EPL', 'La Liga', 'Serie A', 'Ligue 1')",1,False,Ligue 1 → EPL → La Liga → Serie A → Ligue 1,0.0
+"('Ligue 1', 'Bundesliga', 'Ligue 1', 'Bundesliga', 'Ligue 1')",1,False,Ligue 1 → Bundesliga → Ligue 1 → Bundesliga → Ligue 1,0.0
+"('Ligue 1', 'Bundesliga', 'Ligue 1', 'Bundesliga')",1,False,Ligue 1 → Bundesliga → Ligue 1 → Bundesliga,1.684000000000001
+"('Ligue 1', 'Ligue 1', 'Bundesliga', 'EPL')",1,False,Ligue 1 → Ligue 1 → Bundesliga → EPL,0.5160000000000018
+"('Ligue 1', 'Ligue 1', 'Bundesliga', 'EPL', 'Bundesliga')",1,False,Ligue 1 → Ligue 1 → Bundesliga → EPL → Bundesliga,1.684000000000001
+"('Ligue 1', 'Ligue 1', 'Serie A', 'Ligue 1', 'Serie A')",1,False,Ligue 1 → Ligue 1 → Serie A → Ligue 1 → Serie A,0.375
+"('La Liga', 'Bundesliga', 'La Liga', 'EPL')",1,False,La Liga → Bundesliga → La Liga → EPL,1.0600000000000023
+"('La Liga', 'La Liga', 'Eredivisie', 'La Liga')",1,False,La Liga → La Liga → Eredivisie → La Liga,0.0
+"('Bundesliga', 'Ligue 1', 'La Liga')",1,False,Bundesliga → Ligue 1 → La Liga,-2.2280000000000015
+"('EPL', 'La Liga', 'EPL')",1,False,EPL → La Liga → EPL,0.0
+"('EPL', 'La Liga', 'Championship')",1,False,EPL → La Liga → Championship,3.7680000000000007
+"('EPL', 'Eredivisie', 'EPL')",1,False,EPL → Eredivisie → EPL,0.0
+"('EPL', 'Eredivisie', 'Championship')",1,False,EPL → Eredivisie → Championship,3.7680000000000007
+"('EPL', 'EPL', 'Ligue 1')",1,False,EPL → EPL → Ligue 1,-0.5160000000000018
+"('EPL', 'Championship', 'EPL', 'Championship')",1,False,EPL → Championship → EPL → Championship,3.7680000000000007
+"('EPL', 'Bundesliga', 'Serie A')",1,False,EPL → Bundesliga → Serie A,-0.1410000000000018
+"('EPL', 'Bundesliga', 'La Liga', 'Bundesliga')",1,False,EPL → Bundesliga → La Liga → Bundesliga,1.1679999999999993
+"('EPL', 'Bundesliga', 'EPL')",1,False,EPL → Bundesliga → EPL,0.0
+"('Bundesliga', 'Serie A', 'La Liga')",1,False,Bundesliga → Serie A → La Liga,-2.2280000000000015
+"('Bundesliga', 'Serie A', 'Eredivisie')",1,False,Bundesliga → Serie A → Eredivisie,-2.6999999999999993
+"('Bundesliga', 'Serie A', 'EPL')",1,False,Bundesliga → Serie A → EPL,-1.1679999999999993
+"('Bundesliga', 'Serie A', 'Bundesliga')",1,False,Bundesliga → Serie A → Bundesliga,0.0
+"('Bundesliga', 'Ligue 1', 'Serie A', 'Ligue 1')",1,False,Bundesliga → Ligue 1 → Serie A → Ligue 1,-1.684000000000001
+"('Bundesliga', 'Ligue 1', 'Bundesliga', 'Ligue 1', 'Eredivisie', 'Ligue 1')",1,False,Bundesliga → Ligue 1 → Bundesliga → Ligue 1 → Eredivisie → Ligue 1,-1.684000000000001
+"('La Liga', 'La Liga', 'EPL', 'Serie A', 'EPL', 'La Liga')",1,False,La Liga → La Liga → EPL → Serie A → EPL → La Liga,0.0
+"('Bundesliga', 'Ligue 1', 'Bundesliga', 'Ligue 1')",1,False,Bundesliga → Ligue 1 → Bundesliga → Ligue 1,-1.684000000000001
+"('Bundesliga', 'La Liga', 'EPL')",1,False,Bundesliga → La Liga → EPL,-1.1679999999999993
+"('Bundesliga', 'La Liga', 'Championship')",1,False,Bundesliga → La Liga → Championship,2.6000000000000014
+"('Bundesliga', 'La Liga', 'Bundesliga', 'La Liga', 'Bundesliga')",1,False,Bundesliga → La Liga → Bundesliga → La Liga → Bundesliga,0.0
+"('Bundesliga', 'La Liga', 'Bundesliga', 'Eredivisie', 'Bundesliga')",1,False,Bundesliga → La Liga → Bundesliga → Eredivisie → Bundesliga,0.0
+"('Bundesliga', 'Eredivisie', 'Bundesliga', 'Ligue 1')",1,False,Bundesliga → Eredivisie → Bundesliga → Ligue 1,-1.684000000000001
+"('Bundesliga', 'Eredivisie', 'Bundesliga', 'Eredivisie', 'Bundesliga', 'Eredivisie')",1,False,Bundesliga → Eredivisie → Bundesliga → Eredivisie → Bundesliga → Eredivisie,-2.6999999999999993
+"('Bundesliga', 'Eredivisie', 'Bundesliga', 'Eredivisie', 'Bundesliga')",1,False,Bundesliga → Eredivisie → Bundesliga → Eredivisie → Bundesliga,0.0
+"('Bundesliga', 'EPL', 'Championship')",1,False,Bundesliga → EPL → Championship,2.6000000000000014
+"('Bundesliga', 'EPL', 'Bundesliga', 'Championship')",1,False,Bundesliga → EPL → Bundesliga → Championship,2.6000000000000014
+"('Bundesliga', 'Championship', 'Bundesliga')",1,False,Bundesliga → Championship → Bundesliga,0.0
+"('Bundesliga', 'Bundesliga', 'Serie A', 'Eredivisie')",1,False,Bundesliga → Bundesliga → Serie A → Eredivisie,-2.6999999999999993
+"('Bundesliga', 'Bundesliga', 'Ligue 1', 'Bundesliga')",1,False,Bundesliga → Bundesliga → Ligue 1 → Bundesliga,0.0
+"('Bundesliga', 'Bundesliga', 'Eredivisie', 'Bundesliga', 'Eredivisie')",1,False,Bundesliga → Bundesliga → Eredivisie → Bundesliga → Eredivisie,-2.6999999999999993
+"('EPL', 'La Liga', 'EPL', 'Championship')",1,False,EPL → La Liga → EPL → Championship,3.7680000000000007
+"('EPL', 'La Liga', 'Serie A', 'La Liga')",1,False,EPL → La Liga → Serie A → La Liga,-1.0600000000000023
+"('EPL', 'Ligue 1', 'Championship')",1,False,EPL → Ligue 1 → Championship,3.7680000000000007
+"('EPL', 'Ligue 1', 'EPL')",1,False,EPL → Ligue 1 → EPL,0.0
+"('La Liga', 'La Liga', 'EPL', 'Serie A')",1,False,La Liga → La Liga → EPL → Serie A,0.9190000000000005
+"('La Liga', 'La Liga', 'EPL', 'La Liga', 'Championship')",1,False,La Liga → La Liga → EPL → La Liga → Championship,4.828000000000003
+"('La Liga', 'La Liga', 'EPL', 'Championship')",1,True,La Liga → La Liga → EPL → Championship,4.828000000000003
+"('La Liga', 'La Liga', 'Bundesliga', 'La Liga', 'Serie A')",1,False,La Liga → La Liga → Bundesliga → La Liga → Serie A,0.9190000000000005
+"('La Liga', 'La Liga', 'Bundesliga', 'La Liga', 'Bundesliga')",1,False,La Liga → La Liga → Bundesliga → La Liga → Bundesliga,2.2280000000000015
+"('La Liga', 'Eredivisie', 'La Liga')",1,False,La Liga → Eredivisie → La Liga,0.0
+"('La Liga', 'Eredivisie', 'EPL')",1,False,La Liga → Eredivisie → EPL,1.0600000000000023
+"('La Liga', 'EPL', 'Ligue 1', 'Championship')",1,False,La Liga → EPL → Ligue 1 → Championship,4.828000000000003
+"('La Liga', 'EPL', 'Bundesliga', 'EPL', 'Serie A')",1,False,La Liga → EPL → Bundesliga → EPL → Serie A,0.9190000000000005
+"('La Liga', 'Bundesliga', 'La Liga', 'Serie A', 'La Liga')",1,False,La Liga → Bundesliga → La Liga → Serie A → La Liga,0.0
+"('La Liga', 'Bundesliga', 'La Liga')",1,False,La Liga → Bundesliga → La Liga,0.0
+"('La Liga', 'Bundesliga', 'Eredivisie')",1,False,La Liga → Bundesliga → Eredivisie,-0.47199999999999775
+"('Eredivisie', 'Serie A', 'La Liga')",1,False,Eredivisie → Serie A → La Liga,0.47199999999999775
+"('Eredivisie', 'Serie A', 'Eredivisie', 'Bundesliga', 'Eredivisie')",1,False,Eredivisie → Serie A → Eredivisie → Bundesliga → Eredivisie,0.0
+"('Eredivisie', 'Ligue 1', 'Eredivisie')",1,False,Eredivisie → Ligue 1 → Eredivisie,0.0
+"('Eredivisie', 'La Liga', 'Serie A')",1,True,Eredivisie → La Liga → Serie A,1.3909999999999982
+"('Eredivisie', 'Eredivisie', 'Serie A', 'Ligue 1')",1,False,Eredivisie → Eredivisie → Serie A → Ligue 1,1.0159999999999982
+"('Eredivisie', 'Eredivisie', 'Serie A', 'Bundesliga')",1,True,Eredivisie → Eredivisie → Serie A → Bundesliga,2.6999999999999993
+"('Eredivisie', 'Eredivisie', 'La Liga', 'Eredivisie', 'Bundesliga', 'Eredivisie', 'Bundesliga')",1,False,Eredivisie → Eredivisie → La Liga → Eredivisie → Bundesliga → Eredivisie → Bundesliga,2.6999999999999993
+"('Eredivisie', 'Eredivisie', 'La Liga', 'Bundesliga', 'La Liga')",1,False,Eredivisie → Eredivisie → La Liga → Bundesliga → La Liga,0.47199999999999775
+"('Eredivisie', 'Eredivisie', 'EPL', 'Ligue 1', 'Championship')",1,False,Eredivisie → Eredivisie → EPL → Ligue 1 → Championship,5.300000000000001
+"('Eredivisie', 'Eredivisie', 'EPL', 'Eredivisie')",1,False,Eredivisie → Eredivisie → EPL → Eredivisie,0.0
+"('Eredivisie', 'Eredivisie', 'Bundesliga', 'Serie A')",1,False,Eredivisie → Eredivisie → Bundesliga → Serie A,1.3909999999999982
+"('Eredivisie', 'EPL', 'Championship')",1,True,Eredivisie → EPL → Championship,5.300000000000001
+"('Eredivisie', 'Championship', 'EPL')",1,False,Eredivisie → Championship → EPL,1.532
+"('Eredivisie', 'Bundesliga', 'Serie A')",1,False,Eredivisie → Bundesliga → Serie A,1.3909999999999982
+"('Eredivisie', 'Bundesliga', 'La Liga', 'Eredivisie')",1,False,Eredivisie → Bundesliga → La Liga → Eredivisie,0.0
+"('Eredivisie', 'Bundesliga', 'Eredivisie', 'Bundesliga')",1,False,Eredivisie → Bundesliga → Eredivisie → Bundesliga,2.6999999999999993
+"('EPL', 'Serie A', 'Championship')",1,False,EPL → Serie A → Championship,3.7680000000000007
+"('Serie A', 'Serie A', 'Ligue 1', 'EPL')",1,False,Serie A → Serie A → Ligue 1 → EPL,0.1410000000000018

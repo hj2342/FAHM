@@ -1,0 +1,9 @@
+Metric,Value
+ATT (min),-31.159
+SE (bootstrap),7.440
+t-statistic,-4.299
+p-value (paired t-test),0.0000
+95% CI lower,-45.37
+95% CI upper,-16.95
+Match rate,1.000
+N matched pairs,"7,453"
