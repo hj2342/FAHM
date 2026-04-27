@@ -1,6 +1,6 @@
 ,log_transfer_fee,origin_pressure,dest_pressure,pressure_gap,season_year
-log_transfer_fee,1.0,-0.0071,-0.0303,-0.0278,0.1448
-origin_pressure,-0.0071,1.0,0.5506,-0.312,0.0399
-dest_pressure,-0.0303,0.5506,1.0,0.6213,0.128
-pressure_gap,-0.0278,-0.312,0.6213,1.0,0.1082
-season_year,0.1448,0.0399,0.128,0.1082,1.0
+log_transfer_fee,1.0,-0.0138,-0.0659,-0.0617,0.1038
+origin_pressure,-0.0138,1.0,0.5126,-0.2878,-0.075
+dest_pressure,-0.0659,0.5126,1.0,0.6748,-0.0871
+pressure_gap,-0.0617,-0.2878,0.6748,1.0,-0.0327
+season_year,0.1038,-0.075,-0.0871,-0.0327,1.0

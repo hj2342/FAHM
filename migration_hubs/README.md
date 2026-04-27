@@ -1,30 +1,36 @@
 # Migration Hubs & Talent Pipelines
 ### A Network Topology of the Global Football Transfer Market
 
-**CS-UH 2219E · Computational Social Science · NYUAD · Spring 2026**  
-Team: Mahmoud Kassem · Aymane Omari · Fady John · Hariharan Janardhanan  
+**CS-UH 2219E - Computational Social Science - NYUAD - Spring 2026**  
+Team: Mahmoud Kassem - Aymane Omari - Fady John - Hariharan Janardhanan  
 Instructor: Professor Talal Rahwan
 
 ---
 
-## Project structure
+## Project Structure
 
-```
-migration_hubs/
-├── main.py            ← entry point; run this
-├── config.py          ← constants, league maps, pressure-index seeds
-├── cache.py           ← disk-caching utilities (pickle-based)
-├── data_loader.py     ← StatsBomb + Transfermarkt loaders (cached)
-├── features.py        ← cleaning & feature engineering
-├── eda.py             ← EDA figures 1–3
-├── network.py         ← SNA figures 4–5
-├── corridors.py       ← career corridor extraction
-├── stats.py           ← OLS, PSM, figures 6–8
-├── cache/             ← auto-created; holds .pkl cache files
-└── outputs/
-    ├── figures/       ← 8 PNG figures
-    ├── tables/        ← 9 CSV tables
-    └── results_summary.txt
+```text
+FAHM/
+|-- migration_hubs/
+|   |-- main.py
+|   |-- build_player_metadata.py
+|   |-- config.py
+|   |-- cache.py
+|   |-- data_loader.py
+|   |-- features.py
+|   |-- eda.py
+|   |-- network.py
+|   |-- corridors.py
+|   |-- stats.py
+|   `-- milestone3.py
+|-- inputs/
+|   |-- player_metadata.csv
+|   `-- player_metadata_template.csv
+|-- cache/
+`-- outputs/
+    |-- figures/
+    |-- tables/
+    `-- results_summary.txt
 ```
 
 ---
@@ -33,45 +39,90 @@ migration_hubs/
 
 ```bash
 pip install statsbombpy pandas numpy networkx python-louvain \
-            statsmodels scikit-learn matplotlib seaborn \
-            requests tqdm scipy
+            statsmodels scikit-learn matplotlib seaborn tqdm scipy
 ```
 
 ---
 
-## Running the script
+## Running The Pipeline
 
 ```bash
-# Normal run (uses cache on subsequent runs — no repeated downloads)
-python main.py
+# Normal run (uses cache on subsequent runs)
+python migration_hubs/main.py
 
-# Force re-download of all raw data (ignores existing cache)
-python main.py --refresh-data
+# Force re-download of raw data
+python migration_hubs/main.py --refresh-data
 
 # Wipe the cache directory and exit
-python main.py --clear-cache
+python migration_hubs/main.py --clear-cache
 ```
 
 ---
 
-## Data sources
+## Data Sources
 
 | Source | What it provides |
-|--------|-----------------|
-| [StatsBomb Open Data](https://github.com/statsbomb/open-data) | Under-pressure % per event by league (Pressure Index) |
+|--------|------------------|
+| [StatsBomb Open Data](https://github.com/statsbomb/open-data) | Under-pressure share from real match events |
 | [ewenme/transfers](https://github.com/ewenme/transfers) | Transfermarkt transfer records, one flat CSV per league |
+| [salimt/football-datasets](https://github.com/salimt/football-datasets) | Public player profiles with citizenship, birth country, and EU status |
 
 ---
 
-## Caching behaviour
+## Optional Player Metadata
 
-On **first run** each loader downloads data from the internet and writes
-a `.pkl` file to `./cache/`.  
-On **subsequent runs** the loaders read from cache — no network calls are
-made, and the script runs in seconds.
+The base Transfermarkt transfer file does **not** contain a clean player-level
+race, ethnicity, or nationality field. The pipeline can optionally merge
+player-level metadata from:
 
-Pass `--refresh-data` to force a full re-download (e.g. after the
-upstream Transfermarkt data is updated).
+`inputs/player_metadata.csv`
+
+A header-only template is included at:
+
+`inputs/player_metadata_template.csv`
+
+You can rebuild the metadata file from the public player-profiles source with:
+
+```bash
+python migration_hubs/build_player_metadata.py
+python migration_hubs/build_player_metadata.py --limit 250
+python migration_hubs/build_player_metadata.py --dest-leagues "Serie A,Bundesliga"
+python migration_hubs/build_player_metadata.py --refresh-source
+```
+
+Required column:
+
+- `player_name`
+
+Recommended optional columns:
+
+- `player_nationality`
+- `player_birth_country`
+- `player_birth_city`
+- `is_eu`
+- `turkey_link_flag`
+- `bias_focus_group`
+- `race_group`
+- `ethnicity_group`
+- `skin_tone_group`
+- `metadata_source`
+- `source_match_quality`
+- `source_candidate_count`
+- `source_candidate_count_post_birth_year`
+- `source_player_names`
+- `source_name_in_home_country`
+- `source_main_position`
+- `source_date_of_birth`
+- `source_dest_leagues`
+- `notes`
+
+Important notes:
+
+- The raw Transfermarkt `country` field is the club or league country, not the player's nationality. In the engineered dataset this is renamed `club_country`.
+- The metadata builder uses normalized `player_name` and, when possible, approximate birth year from transfer age and season to disambiguate same-name profiles.
+- Ambiguous same-name cases stay conservative: unresolved fields are left blank instead of guessed.
+- The code does **not** infer race or ethnicity labels on its own.
+- `milestone3.py` will use fetched nationality, birth-country, EU-status, and optional supplied group columns for descriptive gap checks, but it does not produce causal discrimination claims.
 
 ---
 
@@ -79,14 +130,19 @@ upstream Transfermarkt data is updated).
 
 | File | Description |
 |------|-------------|
-| `fig1_eda_overview.png` | Annual counts · top leagues · fee distribution |
-| `fig2_pressure.png` | Pressure index bar · pressure-gap histogram |
+| `fig1_eda_overview.png` | Annual counts, top leagues, fee distribution |
+| `fig2_pressure.png` | Pressure index bar and pressure-gap histogram |
 | `fig3_flow_heatmap.png` | League-to-league transfer flow |
-| `fig4_network.png` | Directed transfer network (Louvain communities) |
-| `fig5_centrality.png` | Betweenness centrality + net flow |
+| `fig4_network.png` | Directed transfer network |
+| `fig5_centrality.png` | Betweenness centrality and net flow |
 | `fig6_correlation_matrix.png` | Pearson correlation matrix |
 | `fig7_ols_coefficients.png` | OLS coefficient plot with 95% CI |
-| `fig8_psm.png` | PSM balance + propensity-score overlap |
+| `fig8_psm.png` | PSM balance and propensity-score overlap |
+| `fig9_position_heterogeneity.png` | Pressure-effect heterogeneity by player type |
+| `fig10_feature_importance.png` | Explainable model feature importance |
+| `fig11_common_support.png` | Common-support diagnostic |
+| `fig12_group_gap.png` | Exploratory observed-vs-expected gap by supplied metadata group |
+| `fig13_target_league_gap.png` | Bundesliga and Serie A destination gap checks from fetched metadata |
 | `table0_statsbomb_pressure.csv` | StatsBomb-derived pressure metrics |
 | `table1_dataset_summary.csv` | Dataset overview statistics |
 | `table2_transfer_flow_matrix.csv` | League-to-league flow counts |
@@ -95,31 +151,26 @@ upstream Transfermarkt data is updated).
 | `table4_louvain_communities.csv` | Community membership |
 | `table5_career_corridors.csv` | Top career corridor paths |
 | `table6_correlation_matrix.csv` | Pearson correlation matrix |
-| `table7_ols_results.csv` | OLS coefficients, SEs, p-values |
-| `table8_psm_results.csv` | PSM ATT, CI, bootstrap SE |
-| `table8b_psm_balance.csv` | Covariate balance (SMD before/after) |
+| `table7_ols_results.csv` | OLS coefficients, standard errors, p-values |
+| `table8_psm_results.csv` | PSM ATT, confidence interval, bootstrap SE |
+| `table8b_psm_balance.csv` | Covariate balance summary |
+| `table9_position_heterogeneity.csv` | Position-specific OLS coefficients |
+| `table10_feature_importance.csv` | Explainable model feature rankings |
+| `table11_common_support.csv` | Common-support summary |
+| `table12_group_gap.csv` | Exploratory group-gap summary |
+| `table13_target_league_gap.csv` | Target-league gap summary |
 | `results_summary.txt` | Plain-text results summary |
 
 ---
 
-## Key bugs fixed
+## Outcome Variable Note
 
-| Bug | Fix |
-|-----|-----|
-| `TypeError: 'RegressionResultsWrapper' not subscriptable` | `plot_ols_coefficients()` now receives the model object directly, not wrapped in a list |
-| OLS coefficients labelled `x1, x2, …` | Design matrix kept as a named `DataFrame` throughout; `sm.add_constant()` called on the DataFrame, not a numpy array |
-| No caching — data re-downloaded every run | `cache.py` persists raw data to `./cache/` on first download; subsequent runs load from disk |
-| Outputs saved collectively at end | Every figure and table is saved immediately after generation |
-| `bool` dtype crash in VIF / PSM dummies | All dummy matrices cast to `dtype=float` at creation time |
+Transfermarkt records do not include `minutes_played`, so the dependent variable
+used here is:
 
----
+`log_transfer_fee = log(1 + fee_EUR)`
 
-## Outcome variable note
-
-Transfermarkt records do not include `minutes_played`.  
-The dependent variable is therefore **`log_transfer_fee = log(1 + fee_EUR)`**,
-a widely-used proxy for perceived player quality in football economics
-(Müller et al. 2017; Sæbø & Hvattum 2019).
-
-To use `minutes_played` directly, merge an FBref or WhoScored player-season
-dataset on `(player_name, season)` before running `stats.py`.
+This is a proxy for player valuation used in football-economics work. If you
+want to analyze playing time directly, merge an external player-season source
+such as FBref or WhoScored on `(player_name, season)` before rerunning the
+pipeline.

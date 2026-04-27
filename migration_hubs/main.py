@@ -14,14 +14,25 @@ Optional flags
 
 Output
 ------
-    outputs/figures/   8 PNG figures
-    outputs/tables/    9 CSV tables
+    outputs/figures/
+    outputs/tables/
     outputs/results_summary.txt
 """
 
 import argparse
 import sys
 import warnings
+from pathlib import Path
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
+
+LOCAL_SITE_PACKAGES = Path(__file__).resolve().parent.parent / ".python_packages"
+if LOCAL_SITE_PACKAGES.is_dir():
+    sys.path.insert(0, str(LOCAL_SITE_PACKAGES))
+
 import numpy as np
 import pandas as pd
 
@@ -35,6 +46,7 @@ from features    import clean_and_engineer
 from eda         import run_eda
 from network     import run_network_analysis
 from corridors   import run_corridors
+from milestone3  import run_milestone3_analysis
 from stats       import run_statistical_analysis
 
 np.random.seed(RANDOM_SEED)
@@ -104,16 +116,17 @@ LIMITATIONS
   2. Origin league unmapped for ~{unmapped_pct:.0%} of transfers
   3. Bundesliga pressure index is [ESTIMATED] — StatsBomb data unavailable
   4. No Transfermarkt records for non-European leagues in this dataset
+  5. Base data has no direct race field — optional metadata can add nationality, birth country, and EU status, but this pipeline does not infer race labels
 
 OUTPUTS
-  Figures  :  outputs/figures/  (8 PNG files)
-  Tables   :  outputs/tables/   (9 CSV files)
+  Figures  :  outputs/figures/
+  Tables   :  outputs/tables/
   Summary  :  outputs/results_summary.txt
 ================================================================================
 """
     print(summary)
     path = "outputs/results_summary.txt"
-    with open(path, "w") as fh:
+    with open(path, "w", encoding="utf-8") as fh:
         fh.write(summary)
     print(f"[✓] {path}")
 
@@ -175,7 +188,10 @@ def main() -> None:
     # ── 7. Statistics  (figures 6–8 + tables 6–8 saved immediately) ───────────
     model, att, se_boot, _ = run_statistical_analysis(df)
 
-    # ── 8. Results summary ────────────────────────────────────────────────────
+    # ── 8. Milestone 3 exploration  (figures 9–11 + tables 9–11) ────────────
+    run_milestone3_analysis(df)
+
+    # ── 9. Results summary ────────────────────────────────────────────────────
     write_results_summary(df, model, att, se_boot)
 
 

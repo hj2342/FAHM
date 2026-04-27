@@ -1,7 +1,7 @@
 Metric,Value
 Nodes,7.0
-Directed Edges,31.0
-Network Density,0.7381
-Avg Clustering Coeff,0.1385
+Directed Edges,30.0
+Network Density,0.7143
+Avg Clustering Coeff,0.1427
 Avg Path Length,1.0
 Diameter,1.0

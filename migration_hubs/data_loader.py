@@ -19,6 +19,7 @@ Pass  force_refresh=True  to any loader to bypass the cache and re-download.
 
 import sys
 import warnings
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import requests
@@ -36,6 +37,32 @@ warnings.filterwarnings("ignore")
 # ── Transfermarkt raw URL ─────────────────────────────────────────────────────
 _TM_BASE    = "https://raw.githubusercontent.com/ewenme/transfers/master/data"
 _TM_HEADERS = {"User-Agent": "Mozilla/5.0"}
+_LOCAL_PRESSURE_TABLE = Path(DIR_TABLES) / "table0_statsbomb_pressure.csv"
+
+
+def _apply_pressure_rows(sb_df: pd.DataFrame) -> pd.DataFrame:
+    """Update the shared pressure dictionaries from a league-level table."""
+    for _, row in sb_df.iterrows():
+        PRESSURE_INDEX[row["league"]] = row["under_pressure_pct"]
+        PRESSURE_SOURCE[row["league"]] = "statsbomb"
+    return sb_df
+
+
+def _load_local_pressure_snapshot() -> pd.DataFrame:
+    """Load the checked-in pressure snapshot when live StatsBomb access is absent."""
+    if not _LOCAL_PRESSURE_TABLE.is_file():
+        return pd.DataFrame()
+
+    try:
+        sb_df = pd.read_csv(_LOCAL_PRESSURE_TABLE)
+        if sb_df.empty:
+            return sb_df
+        _apply_pressure_rows(sb_df)
+        print(f"[StatsBomb] Loaded {len(sb_df)} leagues from local snapshot.\n")
+        return sb_df
+    except Exception as e:
+        print(f"[WARN] Local pressure snapshot unreadable: {e}\n")
+        return pd.DataFrame()
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -64,27 +91,30 @@ def load_statsbomb_pressure(force_refresh: bool = False) -> pd.DataFrame:
 
     # ── Cache hit ─────────────────────────────────────────────────────────────
     if not force_refresh and cache_exists(cache_key):
-        sb_df = load_cache(cache_key)
-        # Re-apply cached values to global dicts so config stays consistent
-        for _, row in sb_df.iterrows():
-            PRESSURE_INDEX[row["league"]]  = row["under_pressure_pct"]
-            PRESSURE_SOURCE[row["league"]] = "statsbomb"
+        sb_df = _apply_pressure_rows(load_cache(cache_key))
         print(f"[StatsBomb] Loaded {len(sb_df)} leagues from cache.\n")
         return sb_df
+
+    if not force_refresh:
+        local_snapshot = _load_local_pressure_snapshot()
+        if not local_snapshot.empty:
+            return local_snapshot
 
     # ── Cache miss — fetch from StatsBomb ─────────────────────────────────────
     try:
         from statsbombpy import sb
     except ImportError:
-        print("[WARN] statsbombpy not installed — skipping StatsBomb pressure.\n")
-        return pd.DataFrame()
+        print("[WARN] statsbombpy not installed - trying local pressure snapshot.\n")
+        snapshot = _load_local_pressure_snapshot()
+        return snapshot if not snapshot.empty else pd.DataFrame()
 
     print("[StatsBomb] Loading competition list …")
     try:
         comps = sb.competitions()
     except Exception as e:
         print(f"[WARN] StatsBomb competitions() failed: {e}\n")
-        return pd.DataFrame()
+        snapshot = _load_local_pressure_snapshot()
+        return snapshot if not snapshot.empty else pd.DataFrame()
 
     comps["league_key"] = comps["competition_name"].map(SB_LEAGUE_MAP)
     comps = comps.dropna(subset=["league_key"])
@@ -121,8 +151,6 @@ def load_statsbomb_pressure(force_refresh: bool = False) -> pd.DataFrame:
         if acc["ev"] > 0:
             up_pct = round(acc["up"] / acc["ev"] * 100, 3)
             cp_pct = round(acc["cp"] / acc["ev"] * 100, 3)
-            PRESSURE_INDEX[lk]  = up_pct
-            PRESSURE_SOURCE[lk] = "statsbomb"
             rows.append({
                 "league":             lk,
                 "under_pressure_pct": up_pct,
@@ -133,7 +161,7 @@ def load_statsbomb_pressure(force_refresh: bool = False) -> pd.DataFrame:
                   f"counterpress={cp_pct}%  (n={acc['n']} matches)")
 
     print(f"[StatsBomb] Updated {len(rows)} leagues from real event data.\n")
-    sb_df = pd.DataFrame(rows)
+    sb_df = _apply_pressure_rows(pd.DataFrame(rows))
 
     # Persist immediately
     save_cache(cache_key, sb_df)

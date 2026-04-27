@@ -1,0 +1,7 @@
+.python_packages/
+cache/
+__pycache__/
+*.pyc
+inputs/player_metadata.csv
+inputs/player_profiles_source.csv
+!inputs/player_metadata_template.csv

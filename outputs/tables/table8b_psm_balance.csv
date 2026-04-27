@@ -1,4 +1,8 @@
 Covariate,SMD_before,SMD_after,balanced
-player_age,0.0191,0.0099,True
-log_market_value,0.0169,0.0106,True
-nat_match,0.004,0.0032,True
+season_year,0.1037,0.031,True
+dest_Championship,0.4816,0.0414,True
+dest_EPL,0.2117,0.0,True
+dest_Eredivisie,0.8304,0.0,True
+dest_La Liga,0.9185,0.0,True
+dest_Ligue 1,0.4276,0.0,True
+dest_Serie A,0.5243,0.0393,True
