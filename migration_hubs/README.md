@@ -143,6 +143,7 @@ Important notes:
 | `fig11_common_support.png` | Common-support diagnostic |
 | `fig12_group_gap.png` | Exploratory observed-vs-expected gap by supplied metadata group |
 | `fig13_target_league_gap.png` | Bundesliga and Serie A destination gap checks from fetched metadata |
+| `fig14_serie_a_selection_threshold.png` | Serie A selection-threshold check by EU status |
 | `table0_statsbomb_pressure.csv` | StatsBomb-derived pressure metrics |
 | `table1_dataset_summary.csv` | Dataset overview statistics |
 | `table2_transfer_flow_matrix.csv` | League-to-league flow counts |
@@ -159,6 +160,7 @@ Important notes:
 | `table11_common_support.csv` | Common-support summary |
 | `table12_group_gap.csv` | Exploratory group-gap summary |
 | `table13_target_league_gap.csv` | Target-league gap summary |
+| `table14_serie_a_selection_threshold.csv` | Serie A selection-threshold summary |
 | `results_summary.txt` | Plain-text results summary |
 
 ---

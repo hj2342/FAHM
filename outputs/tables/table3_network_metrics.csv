@@ -1,8 +1,8 @@
 league,in_degree,out_degree,net_flow,betweenness,pagerank,clustering_coef,pressure_index,pressure_source
-Eredivisie,123,228,-105,0.1667,0.0316,0.1058,19.8,estimated
-Serie A,220,419,-199,0.0667,0.0431,0.132,21.191,statsbomb
-Bundesliga,187,437,-250,0.0333,0.0412,0.1249,22.5,estimated
-Ligue 1,255,286,-31,0.0333,0.0438,0.1278,20.816,statsbomb
-Championship,742,113,629,0.0,0.39,0.1592,25.1,estimated
-La Liga,255,455,-200,0.0,0.0457,0.1462,20.272,statsbomb
-EPL,647,491,156,0.0,0.4046,0.2028,21.332,statsbomb
+Eredivisie,123,228,-105,0.1667,0.0316,0.1051,19.8,estimated
+Serie A,220,419,-199,0.0667,0.0431,0.1313,21.191,statsbomb
+Bundesliga,187,437,-250,0.0333,0.0412,0.1248,22.5,estimated
+Ligue 1,255,286,-31,0.0333,0.0438,0.1277,20.816,statsbomb
+Championship,742,113,629,0.0,0.39,0.1591,25.1,estimated
+La Liga,255,455,-200,0.0,0.0457,0.1461,20.272,statsbomb
+EPL,647,491,156,0.0,0.4046,0.2026,21.332,statsbomb

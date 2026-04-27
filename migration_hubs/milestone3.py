@@ -8,6 +8,7 @@ Figure 10 : Explainable model feature importance for transfer fees
 Figure 11 : Common-support diagnostic for propensity-score matching
 Figure 12 : Group-level step-up gap using optional player metadata
 Figure 13 : Target-league gap checks using fetched player metadata
+Figure 14 : Serie A selection-threshold check by EU status
 
 Tables
 ------
@@ -16,6 +17,7 @@ table10_feature_importance.csv
 table11_common_support.csv
 table12_group_gap.csv
 table13_target_league_gap.csv
+table14_serie_a_selection_threshold.csv
 """
 
 import warnings
@@ -520,17 +522,13 @@ def run_group_gap_analysis(df: pd.DataFrame) -> pd.DataFrame | None:
     x_floor, x_ceiling = ax.get_xlim()
     x_span = x_ceiling - x_floor
     for i, row in summary.iterrows():
-        label_x = (
-            row["gap_pp"] + 0.02 * x_span
-            if row["gap_pp"] >= 0
-            else row["gap_pp"] - 0.02 * x_span
-        )
+        label_x = x_ceiling - 0.02 * x_span
         ax.text(
             label_x,
             i,
             f"n={int(row['n_obs'])}",
             va="center",
-            ha="left" if row["gap_pp"] >= 0 else "right",
+            ha="right",
             fontsize=9,
             color="white",
         )
@@ -721,17 +719,13 @@ def run_target_league_bias_checks(df: pd.DataFrame) -> pd.DataFrame | None:
         x_floor, x_ceiling = ax.get_xlim()
         x_span = x_ceiling - x_floor
         for i, row in summary.iterrows():
-            label_x = (
-                row["gap_pp"] + 0.02 * x_span
-                if row["gap_pp"] >= 0
-                else row["gap_pp"] - 0.02 * x_span
-            )
+            label_x = x_ceiling - 0.02 * x_span
             ax.text(
                 label_x,
                 i,
                 f"n={int(row['n_obs'])}",
                 va="center",
-                ha="left" if row["gap_pp"] >= 0 else "right",
+                ha="right",
                 fontsize=9,
                 color="white",
             )
@@ -752,6 +746,198 @@ def run_target_league_bias_checks(df: pd.DataFrame) -> pd.DataFrame | None:
         "nationality, birth-country, and EU-status metadata; they do not infer race labels.\n"
     )
     return results
+
+
+def run_serie_a_selection_threshold(df: pd.DataFrame) -> pd.DataFrame | None:
+    """
+    Explore whether non-EU players who reach Serie A look unusually selected.
+
+    Operationalization
+    -----------------
+    Among Serie A arrivals with EU-status metadata, define an "elite-fee"
+    entrant as a player in the top quartile of log transfer fees. We then
+    estimate each entrant's expected elite-fee probability without using EU
+    status itself and compare observed vs expected rates by EU status.
+
+    A positive non-EU gap is consistent with a stronger selection threshold:
+    conditional on reaching Serie A, non-EU players are disproportionately in
+    the higher-fee tail.
+    """
+    df = _ensure_position_group(df)
+    required = [
+        "dest_league",
+        "log_transfer_fee",
+        "age",
+        "season_year",
+        "position_group",
+        "origin_league",
+        "is_eu",
+    ]
+    missing = [c for c in required if c not in df.columns]
+    if missing:
+        print(f"[M3] Serie A selection-threshold check skipped - missing columns: {missing}")
+        return None
+
+    use = df[df["dest_league"] == "Serie A"].copy()
+    use["eu_flag"] = use["is_eu"].map(_parse_boolish)
+    use = use[use["eu_flag"].notna()].copy()
+
+    if len(use) < 500:
+        print(f"[M3] Serie A selection-threshold check skipped - only {len(use)} usable rows.")
+        return None
+
+    counts = use["eu_flag"].value_counts()
+    false_n = int(counts.get(False, 0))
+    true_n = int(counts.get(True, 0))
+    if false_n == 0 or true_n == 0:
+        print("[M3] Serie A selection-threshold check skipped - missing one EU-status group.")
+        return None
+    if false_n < 100 or true_n < 500:
+        print("[M3] Serie A selection-threshold check skipped - EU-status groups too small.")
+        return None
+
+    elite_threshold = float(use["log_transfer_fee"].quantile(0.75))
+    use["elite_fee_entry"] = (use["log_transfer_fee"] >= elite_threshold).astype(int)
+
+    numeric = ["age", "season_year"]
+    categorical = ["position_group", "origin_league"]
+    model = Pipeline([
+        ("preprocessor", ColumnTransformer(
+            transformers=[
+                ("num", Pipeline([
+                    ("imputer", SimpleImputer(strategy="median")),
+                    ("scale", StandardScaler()),
+                ]), numeric),
+                ("cat", Pipeline([
+                    ("imputer", SimpleImputer(strategy="most_frequent")),
+                    ("onehot", OneHotEncoder(handle_unknown="ignore")),
+                ]), categorical),
+            ]
+        )),
+        ("logit", LogisticRegression(max_iter=2000, random_state=RANDOM_SEED)),
+    ])
+    X = use[numeric + categorical]
+    y = use["elite_fee_entry"].astype(int)
+    model.fit(X, y)
+    use["expected_elite_prob"] = model.predict_proba(X)[:, 1]
+    use["group_label"] = use["eu_flag"].map({True: "EU", False: "Non-EU"})
+
+    summary = (
+        use.groupby("group_label")
+           .agg(
+               n_obs=("elite_fee_entry", "size"),
+               observed_elite_rate=("elite_fee_entry", "mean"),
+               expected_elite_rate=("expected_elite_prob", "mean"),
+               mean_log_transfer_fee=("log_transfer_fee", "mean"),
+           )
+           .reset_index()
+    )
+    summary["gap_pp"] = (
+        (summary["observed_elite_rate"] - summary["expected_elite_rate"]) * 100
+    )
+    summary["elite_threshold_log_fee"] = elite_threshold
+    summary["elite_threshold_fee_eur"] = float(np.expm1(elite_threshold))
+    summary["group_label"] = pd.Categorical(
+        summary["group_label"],
+        categories=["EU", "Non-EU"],
+        ordered=True,
+    )
+    summary = summary.sort_values("group_label").reset_index(drop=True)
+
+    csv_out = f"{DIR_TABLES}/table14_serie_a_selection_threshold.csv"
+    summary.to_csv(csv_out, index=False)
+    print(f"[✓] {csv_out}")
+
+    fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+
+    rates = summary.melt(
+        id_vars=["group_label", "n_obs"],
+        value_vars=["observed_elite_rate", "expected_elite_rate"],
+        var_name="rate_type",
+        value_name="rate",
+    )
+    rates["rate_label"] = rates["rate_type"].map({
+        "observed_elite_rate": "Observed",
+        "expected_elite_rate": "Expected",
+    })
+
+    ax = axes[0]
+    sns.barplot(
+        data=rates,
+        x="group_label",
+        y="rate",
+        hue="rate_label",
+        palette=[PAL["teal"], PAL["gold"]],
+        ax=ax,
+    )
+    ax.set_xlabel("")
+    ax.set_ylabel("Share of Serie A arrivals in top fee quartile")
+    ax.set_title(
+        "Observed vs expected elite-fee entrant rate\n"
+        "Elite fee = top quartile of Serie A arrivals",
+        fontsize=12,
+        fontweight="bold",
+        pad=10,
+    )
+    ax.yaxis.grid(True)
+    ax.legend(framealpha=0.3, title="")
+    for i, row in summary.iterrows():
+        ax.text(
+            i,
+            0.02,
+            f"n={int(row['n_obs'])}",
+            ha="center",
+            va="bottom",
+            fontsize=9,
+            color="white",
+        )
+
+    ax = axes[1]
+    colors = [
+        PAL["teal"] if v >= 0 else PAL["coral"]
+        for v in summary["gap_pp"]
+    ]
+    ax.bar(summary["group_label"].astype(str), summary["gap_pp"], color=colors, edgecolor="none", alpha=0.9)
+    ax.axhline(0, color=PAL["muted"], linestyle="--", linewidth=1)
+    ax.set_xlabel("")
+    ax.set_ylabel("Observed - expected elite-fee rate (pp)")
+    ax.set_title(
+        "Selection-threshold gap by EU status",
+        fontsize=12,
+        fontweight="bold",
+        pad=10,
+    )
+    ax.yaxis.grid(True)
+    for i, row in summary.iterrows():
+        label_y = row["gap_pp"] + (0.5 if row["gap_pp"] >= 0 else -0.5)
+        ax.text(
+            i,
+            label_y,
+            f"{row['gap_pp']:+.1f} pp",
+            ha="center",
+            va="bottom" if row["gap_pp"] >= 0 else "top",
+            fontsize=9,
+            color="white",
+        )
+
+    fig.suptitle(
+        "Figure 14: Serie A Selection-Threshold Check",
+        fontsize=14,
+        fontweight="bold",
+        y=1.02,
+    )
+    plt.tight_layout()
+
+    fig_out = f"{DIR_FIGURES}/fig14_serie_a_selection_threshold.png"
+    plt.savefig(fig_out)
+    plt.close()
+    print(f"[✓] {fig_out}")
+    print(
+        "[M3] Serie A selection-threshold check is descriptive. A positive "
+        "Non-EU gap is consistent with stronger selection into the league, "
+        "not proof of a causal mechanism.\n"
+    )
+    return summary
 
 
 def _match_on_scores(psm_df: pd.DataFrame) -> dict[str, float] | None:
@@ -969,6 +1155,7 @@ def run_milestone3_analysis(df: pd.DataFrame) -> None:
     run_common_support_diagnostic(df)
     run_group_gap_analysis(df)
     run_target_league_bias_checks(df)
+    run_serie_a_selection_threshold(df)
     print(
         "[M3] Group-gap analysis runs only on externally supplied metadata "
         "columns; this code does not infer race or ethnicity labels.\n"
