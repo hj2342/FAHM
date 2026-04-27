@@ -1,0 +1,12 @@
+metric,value
+all_rows,7042.0
+treated_rows,4594.0
+control_rows,2448.0
+common_support_lower,0.127583
+common_support_upper,0.910378
+rows_in_support,7042.0
+share_in_support,1.0
+treated_in_support,4594.0
+control_in_support,2448.0
+exploratory_trimmed_pairs,4594.0
+exploratory_trimmed_att,-0.2728

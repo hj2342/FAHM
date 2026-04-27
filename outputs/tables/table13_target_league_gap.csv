@@ -1,0 +1,5 @@
+group_label,n_obs,observed_target_rate,expected_target_rate,gap_pp,analysis_name,target_league,group_type,overall_target_rate
+Other,34742,0.10313165620862356,0.10463635733523954,-0.15047011266159788,bundesliga_turkey_link,Bundesliga,Bundesliga destination gap by Turkey-linked status,0.10504669694113615
+Turkey-linked,271,0.3505535055350554,0.15731943709936988,19.32340684356855,bundesliga_turkey_link,Bundesliga,Bundesliga destination gap by Turkey-linked status,0.10504669694113615
+EU,31860,0.13603264281230382,0.13883880590572098,-0.28061630934171633,serie_a_eu_status,Serie A,Serie A destination gap by EU status,0.13977665438551395
+Non-EU,3153,0.17760862670472566,0.14917057154496557,2.8438055159760083,serie_a_eu_status,Serie A,Serie A destination gap by EU status,0.13977665438551395

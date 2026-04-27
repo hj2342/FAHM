@@ -2,32 +2,41 @@
 ================================================================================
 MIGRATION HUBS & TALENT PIPELINES — RESULTS SUMMARY
 CS-UH 2219E · Computational Social Science · NYUAD · Spring 2026
+Team: Mahmoud Kassem · Aymane Omari · Fady John · Hariharan Janardhanan
+Instructor: Professor Talal Rahwan
 ================================================================================
 
-DATA MODE: REAL
+DATA SOURCES
+  StatsBomb Open Data: under_pressure % computed from real match events
+  Transfermarkt:       ewenme/transfers (master branch, flat CSV per league)
 
-SCOPE (Real Mode)
-  Source 1: Transfermarkt via ewenme/transfers (Big-5 leagues, 2017–2022)
-  Source 2: StatsBomb Open Data (La Liga, Bundesliga, Ligue 1 event-level)
-  Pressure values: 3 leagues = StatsBomb-derived; others = [ESTIMATED]
+SCOPE
+  Dest leagues   : 7
+  Total records  : 35,013
+  Unique players : 13,602
+  Non-zero fees  : 9,162 (26.2%)
+  Season range   : 2010–2022
 
-DATASET
-  Records:        15,000
-  Unique players: 15,000
-  Dest leagues:   8
-  Seasons:        5
+OUTCOME VARIABLE
+  DV = log_transfer_fee  (proxy for player valuation; Müller et al. 2017)
+  Note: to use minutes_played, merge FBref/WhoScored on (player_name, season)
 
-HYPOTHESIS TEST (OLS — Full Model, clustered SEs by dest_league)
-  β(origin_pressure) = 1.0717
-  p-value            = 0.3803
-  Adj. R²            = 0.0154
-  Verdict:           ✗ pressure_index NOT significant at p<0.05
+HYPOTHESIS TEST — OLS (dest-league FE, clustered SEs)
+  ✗ origin_pressure NOT significant  β=-0.0395, p=0.1761
+  Adj. R² = 0.0944
 
-CAUSAL INFERENCE (PSM — paired t-test, 1:1 NN, caliper=0.2×SD(logit PS))
-  ATT = -31.16 min (Bootstrap SE = 7.44)
+CAUSAL INFERENCE — PSM (1:1 NN, caliper = 0.1 × SD logit PS)
+  ATT = -0.2728 log-fee units  (exp(ATT)=0.761 fee multiplier, Bootstrap SE=0.0211)
+
+LIMITATIONS
+  1. DV is transfer fee, not playing time — attenuation risk if fee ≠ quality
+  2. Origin league unmapped for ~80% of transfers
+  3. Bundesliga pressure index is [ESTIMATED] — StatsBomb data unavailable
+  4. No Transfermarkt records for non-European leagues in this dataset
+  5. Base data has no direct race field — optional metadata can add nationality, birth country, and EU status, but this pipeline does not infer race labels
 
 OUTPUTS
-  Figures : outputs/figures/  (8 PNG files)
-  Tables  : outputs/tables/   (8 CSV files)
-  Summary : outputs/results_summary.txt
+  Figures  :  outputs/figures/
+  Tables   :  outputs/tables/
+  Summary  :  outputs/results_summary.txt
 ================================================================================

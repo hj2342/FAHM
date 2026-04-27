@@ -1,9 +1,10 @@
 Metric,Value
-ATT (min),-31.159
-SE (bootstrap),7.440
-t-statistic,-4.299
-p-value (paired t-test),0.0000
-95% CI lower,-45.37
-95% CI upper,-16.95
+ATT (log-fee),-0.2728
+exp(ATT) — fee multiplier,0.761
+SE (bootstrap),0.0211
+t-statistic,-13.53
+p-value (paired t),0.0000
+95% CI lower,-0.3123
+95% CI upper,-0.2333
 Match rate,1.000
-N matched pairs,"7,453"
+N matched pairs,"4,594"

@@ -1,0 +1,225 @@
+% Use only LaTeX2e, calling the article.cls class and 12-point type.
+\documentclass[12pt]{article}
+
+\usepackage{scicite}
+\usepackage{times}
+\usepackage{graphicx}
+\graphicspath{{paper_figures/}{./}}
+
+\topmargin 0.0cm
+\oddsidemargin 0.2cm
+\textwidth 16cm
+\textheight 21cm
+\footskip 1.0cm
+
+\newenvironment{sciabstract}{%
+\begin{quote} \bf}
+{\end{quote}}
+
+\renewcommand\refname{References and Notes}
+
+\newcounter{lastnote}
+\newenvironment{scilastnote}{%
+\setcounter{lastnote}{\value{enumiv}}%
+\addtocounter{lastnote}{+1}%
+\begin{list}%
+{\arabic{lastnote}.}
+{\setlength{\leftmargin}{.22in}}
+{\setlength{\labelsep}{.5em}}}
+{\end{list}}
+
+\title{Migration Hubs and Talent Pipelines: Tactical Intensity, Transfer Networks, and Selection in the European Football Transfer Market}
+
+\author
+{Aymane Omari,$^{1}$ Fady John,$^{1\ast}$ Hariharan Janardhanan,$^{1}$ Mahmoud Kassem$^{1}$\\
+\\
+\normalsize{$^{1}$Division of Science, New York University Abu Dhabi, Abu Dhabi, United Arab Emirates}\\
+\\
+\normalsize{$^\ast$To whom correspondence should be addressed; E-mail: aymane.omari@nyu.edu.}
+}
+
+\date{}
+
+\begin{document}
+
+\baselineskip24pt
+\maketitle
+
+\begin{sciabstract}
+We study whether players moving from tactically intense football leagues are rewarded in the transfer market and whether league-to-league mobility reveals systematic migration corridors beyond simple league ranking. We combine publicly available transfer records from Transfermarkt-derived league files with event-level open data from StatsBomb to build a dataset of 35,013 inbound transfers involving 13,602 players across seven European destination leagues from 2010 to 2022. We construct a league-level pressure index from the share of events tagged as under pressure, build a directed transfer network, extract repeated player career corridors, and estimate both descriptive and quasi-causal models. The network side of the project yields robust structure: the English Championship is the dominant net importer, the Bundesliga is the largest net exporter, and the Eredivisie acts as the highest-betweenness gatekeeper. However, our main fee-based hypothesis receives no statistically significant support in ordinary least squares regression: the coefficient on origin-league pressure is negative and small ($\beta=-0.0395$, $p=0.1761$). A propensity-score matching estimate is statistically significant but is not interpreted causally because treatment assignment is weakly separated and matching becomes almost automatic. Position-specific regressions and an explainable feature-importance model likewise suggest that age, destination context, and season matter much more than origin pressure. Finally, using externally fetched player metadata for nationality, birth country, and EU status, we run exploratory bias and selection checks. These do not show a negative signed gap for the tested groups, but a new Serie A selection-threshold analysis suggests that non-EU players who do reach Serie A are disproportionately concentrated among higher-fee arrivals, consistent with stronger entry selection rather than straightforward underpricing. Taken together, the results show that the network structure of football migration is real and informative, while the fee premium hypothesis remains unsupported in our current data and design.
+\end{sciabstract}
+
+\section*{Introduction}
+
+Professional football transfers are simultaneously labor-market exchanges, competitive strategy, and symbolic statements about hierarchy between leagues. Clubs do not merely buy players; they buy projected performance, tactical fit, resale value, and institutional legitimacy. Because of this, transfer markets are a useful setting for computational social science: they expose how organizations sort talent across nested status systems while making monetary decisions under uncertainty. In European football, these flows are especially visible because a relatively small set of high-profile leagues repeatedly exchange players with one another, producing both market prices and migration pathways that can be analyzed as a network.
+
+Our project began with a simple but nontrivial question: does the tactical intensity of a player's origin league help explain the value of that player in the destination market? We operationalize tactical intensity through event-level pressure, using the share of StatsBomb actions marked as under pressure as a league-level proxy. The intuition is straightforward. If a player develops in a league characterized by faster decision-making and more frequent pressure, that player may arrive better prepared for elite tactical environments. If clubs value such preparation, then origin-league pressure might be associated with higher transfer fees or with movement into more tactically demanding leagues.
+
+That hypothesis alone would already be interesting, but it sits inside a broader problem. Transfer markets are shaped not only by player quality but also by structural position, league reputation, scouting networks, regulation, and selection. A move from one league to another may encode tactical advancement, financial asymmetry, or institutional dependence. A statistically significant coefficient, if found, would therefore need to be embedded in a larger descriptive map of how leagues exchange talent. Conversely, a null coefficient should not be treated as proof that no relationship exists. It may instead reveal that transfer fees are too noisy, that the variation in pressure is too narrow, or that other mechanisms dominate price formation.
+
+For that reason, we approach the project in layers. First, we describe the transfer system itself through exploratory plots, network centrality, and repeated career corridors. Second, we test the main fee hypothesis with regression and matching. Third, we extend the analysis using explainable machine learning and metadata-based subgroup checks suggested during milestone feedback. This last extension became particularly important once it became clear that the base data did not support direct claims about player race or ethnicity. Rather than infer sensitive labels from names or images, we limited ourselves to metadata that could be defensibly fetched from public football sources and then used that information to explore descriptive destination and selection gaps.
+
+The result is a paper with mixed substantive conclusions but, we think, a clearer methodological contribution. We do not find strong evidence that origin-league pressure commands a fee premium. We do find that the migration network itself contains interpretable structure, that fee outcomes depend more on destination context than on our pressure measure, and that non-EU entry into Serie A may be better described as a selection-threshold story than as a simple underpricing story. These distinctions matter because they move the project from a single hypothesis test toward a more honest account of what the data can and cannot support.
+
+\section*{Literature Review}
+
+Research on football labor markets has long treated player transfers as a window into valuation under incomplete information. Transfer fees, while noisy and heavily context dependent, are central to how clubs convert uncertainty into monetary decisions. M\"uller, Simons, and Weinmann showed that football market values can be estimated in a data-driven way rather than relying solely on expert judgment, highlighting the relevance of structured predictors in player valuation \cite{muller2017}. Poli, Besson, and Ravenel likewise argued that transfer fees can be modeled econometrically and that they reflect a combination of sporting, contractual, and market characteristics \cite{poli2022}. At the same time, Coates and Parshakov warned that crowd-sourced values from Transfermarkt should not be treated as interchangeable with realized prices, since they can be biased predictors of actual transfer fees \cite{coates2022}. This caution supports our decision to use observed transfer fees rather than crowd valuations as the main outcome variable, even though fees are themselves an imperfect proxy for player quality.
+
+Another relevant strand of work studies football transfers as a network rather than a sequence of isolated transactions. Wand analyzed the football transfer market as a network and showed that its structure can reveal meaningful patterns in the movement of clubs and value \cite{wand2022}. More recent work on European transfer networks similarly suggests that structural position can be informative about competitive standing and market role \cite{dieles2024}. This literature matters for our project because our substantive setting already contains visible rank orderings among leagues. A network representation is therefore most valuable not when it merely restates that elite leagues buy from weaker ones, but when it identifies brokerage, gatekeeping, recurring corridors, or asymmetries that are not obvious from rankings alone.
+
+Our tactical-intensity angle connects the transfer literature with football analytics on pressing and defensive pressure. Event and positional data have made pressing increasingly measurable, and recent work on counterpressing detection illustrates that tactical pressure can be treated as an empirical signal rather than just a stylistic label \cite{bauer2021}. Our pressure index is simpler than a full positional pressing model because it is built from open event data rather than synchronized tracking data, but it follows the same broad idea: tactical environments differ, and those differences may matter for player development and market evaluation.
+
+Methodologically, our paper also draws on causal inference and explainable machine learning. Propensity-score matching provides a standard observational tool for attempting to balance observed confounders between treated and control units \cite{rosenbaum1983}. We use it not to claim definitive causality, but to stress-test whether the OLS pattern survives a more design-oriented approach. For explainability, we follow the logic of interpretable model inspection exemplified by SHAP and related feature-attribution approaches \cite{lundberg2017}. This extension was motivated in part by recent work showing how interpretable machine learning can complement more classical social-scientific modeling when the goal is not only prediction but also structured insight \cite{kim2024}.
+
+The gap in the literature that motivates our study is therefore not the absence of work on football prices, football networks, or tactical analytics in isolation. Rather, it is the limited integration of these three strands. We ask whether origin-league tactical intensity predicts valuation, whether transfer pathways reveal coherent migration channels, and whether metadata-based subgroup analyses suggest overlooked selection patterns. In doing so, we treat null results as informative constraints, not as evidence that the underlying phenomenon is absent.
+
+\section*{Methodology}
+
+\paragraph*{Data.} We merged two public data sources. The first is a Transfermarkt-derived set of flat transfer files hosted by the \texttt{ewenme/transfers} repository, which provides one CSV per league \cite{ewenme}. From this source we retained inbound transfers and engineered a cleaned transfer-fee variable. The second is StatsBomb Open Data, accessed through the public repository and used to compute event-level pressure rates by league \cite{statsbomb}. The final transfer sample includes 35,013 transfers involving 13,602 unique players and seven destination leagues from 2010 to 2022: the Premier League, La Liga, Bundesliga, Serie A, Ligue 1, Eredivisie, and the Championship. Only 26.2\% of transfers have a non-zero fee, which reflects the prevalence of loans, free transfers, and missing-fee cases in the raw market data.
+
+\paragraph*{Pressure index.} For leagues available in StatsBomb Open Data, we computed a pressure index as the share of relevant events tagged as under pressure. This yields direct event-derived values for the Premier League, La Liga, Serie A, Ligue 1, and part of MLS. Because open StatsBomb coverage does not include every league in our transfer data, some values remained externally seeded estimates, most importantly for the Bundesliga, Eredivisie, and Championship. We then mapped each transfer to an origin-league pressure and a destination-league pressure. The pressure gap equals destination minus origin pressure. A key limitation is that only 20.1\% of transfers have mapped origin pressure, because many origin leagues in the transfer records lie outside the subset for which we maintain comparable pressure values.
+
+\paragraph*{Feature engineering.} The cleaned dataset includes player name, age, detailed position, broad position group, destination club, origin club, destination league, origin league, transfer fee in euros, log-transformed fee, season, season year, and the pressure variables. The outcome variable for the main statistical analysis is
+\[
+\log(1+\mathrm{transfer\_fee}_i).
+\]
+We chose this specification because the base transfer records do not contain playing time or player-season performance data. Transfer fees are therefore used as a proxy for perceived value, following the broad football-economics literature, while recognizing that they do not measure on-pitch contribution directly.
+
+\paragraph*{Network and corridor analysis.} We aggregated player movements into a directed league-to-league network, with edge weights given by transfer counts. For readability in the network visualization we applied an edge threshold of at least 25 transfers. We then computed in-degree, out-degree, net flow, PageRank, clustering, and betweenness centrality. Separately, we extracted repeated three-step player-level career corridors from individuals with at least two verified sequential inter-league moves. This lets us distinguish isolated transactions from recurring migration pathways.
+
+\paragraph*{OLS and matching.} Our baseline regression estimates whether origin pressure predicts log transfer fee after controlling for destination league fixed effects and season year:
+\[
+\log(1+\mathrm{fee}_i)=\beta_0+\beta_1 \mathrm{origin\_pressure}_i+\beta_2 \mathrm{season\_year}_i+\gamma_{\ell(i)}+\epsilon_i.
+\]
+Standard errors are clustered by destination league. We then constructed a high-pressure treatment indicator based on whether a player's origin league lies above the median mapped pressure level. Propensity scores were estimated from observed covariates, followed by 1:1 nearest-neighbor matching with a caliper. Because matching quality depends on overlap and score variation, we report diagnostics alongside the ATT rather than treating significance alone as evidence of causal validity.
+
+\paragraph*{Milestone 3 extensions.} We added four exploratory extensions. First, we estimated the OLS pressure coefficient separately for attackers, defenders, midfielders, and goalkeepers. Second, we fit an explainable random-forest fee model and ranked features by permutation importance. Third, we merged optional player metadata from a public player-profiles repository, using normalized names and approximate birth-year disambiguation. This yielded roughly 80\% coverage for nationality, birth country, and EU status, while deliberately leaving race and ethnicity blank unless externally supplied. Fourth, we used this metadata for descriptive group-gap analyses, including destination-league gaps and a new Serie A selection-threshold check. The selection-threshold analysis defines an elite entrant as a player in the top quartile of Serie A transfer fees and compares observed versus expected elite-entry rates by EU status, conditioning on age, season, position group, and origin league.
+
+\section*{Results}
+
+\paragraph*{Descriptive patterns.} The dataset is large enough to describe the market structure at the league level, but it is not a complete representation of all world football. It covers seven destination leagues and 13 seasons, with substantial missingness on transfer fees and incomplete origin-league tactical coverage. Even so, the descriptive plots show meaningful variation in transfer counts, fee distributions, and pressure levels (Fig. 1 and Fig. 2). The pressure distribution is relatively narrow across the mapped leagues, which already hints that any fee effect may be difficult to detect unless it is fairly strong.
+
+\paragraph*{Transfer network structure.} The league-to-league flow matrix and directed network reveal a coherent migration system rather than diffuse random exchange (Fig. 3 and Fig. 4). In the thresholded network, the Championship is the dominant net importer, with net flow of +629, while the Bundesliga is the largest exporter at -250. The Eredivisie has the highest betweenness centrality (0.1667), suggesting a gatekeeping role between other parts of the system. The network is also dense: in the thresholded representation it contains 7 nodes, 30 directed edges, density 0.7143, and average clustering 0.1424. These results support the idea that the transfer market is structured by a small set of recurrent exchange channels rather than independent one-off moves.
+
+\paragraph*{Career corridors.} Repeated player pathways provide additional evidence that the structure is not merely an artifact of league totals (Fig. 5). Among 389 players with at least two verified sequential inter-league transfers, seven of the eight largest corridors imply positive pressure gain. Examples include Serie A $\rightarrow$ Serie A $\rightarrow$ EPL and Ligue 1 $\rightarrow$ Ligue 1 $\rightarrow$ EPL. Not all corridors are upward in pressure; Bundesliga $\rightarrow$ Bundesliga $\rightarrow$ EPL is one of the more visible counterexamples, and some loops simply return players to similar tactical environments. Still, the corridor evidence suggests that many repeated migration paths move toward leagues perceived as more demanding or financially attractive.
+
+\paragraph*{Main hypothesis: no significant fee premium in OLS.} Correlations among the main continuous variables are weak to modest (Fig. 6). Most importantly, the correlation between log transfer fee and origin pressure is only -0.0138. In the OLS model, the coefficient on origin pressure is $\beta=-0.0395$ with $p=0.1761$ and adjusted $R^2=0.0944$ (Fig. 7). This means that we do \emph{not} find statistically significant evidence that higher-pressure origin leagues are associated with higher transfer fees after controlling for destination league and season. We interpret this carefully. Failure to find significance is not evidence that no relationship exists. It means only that, with this outcome variable, this mapping strategy, and this sample, we do not detect a robust fee premium.
+
+\paragraph*{Matching and common support.} The PSM estimate is more dramatic numerically: ATT $=-0.2728$ log-fee units, equivalent to $\exp(\mathrm{ATT})=0.761$, with a bootstrap standard error of 0.0211 (Fig. 8). Yet the diagnostics substantially weaken any causal reading. The match rate is effectively 100\%, and the common-support diagnostic shows that all usable rows fall inside the overlap interval (Fig. 11). This is not the pattern one expects from a rich observational design with meaningful treatment separation; it instead suggests that the treatment model has low variance and matching becomes nearly automatic. Covariate balance after matching looks good, but that alone does not establish causal validity. We therefore report the ATT as a stress test rather than as a credible causal estimate.
+
+\paragraph*{Position heterogeneity and explainability.} Splitting the regression by broad player type does not rescue the main hypothesis (Fig. 9). Attackers have the most negative point estimate ($\beta=-0.0536$, $p=0.0958$), followed by defenders, goalkeepers, and midfielders, but none of the subgroup coefficients is significant at the 5\% level. The explainable machine-learning model points in the same direction conceptually (Fig. 10). Age, destination pressure, destination league, and season year dominate the permutation-importance ranking, whereas origin pressure contributes essentially nothing and is slightly negative on average. The implication is not that tactical intensity is irrelevant in general, but that our origin-league pressure proxy has little marginal explanatory power once destination context and simple player attributes are considered.
+
+\paragraph*{Metadata-based subgroup analysis.} After incorporating public player metadata, we ran descriptive gap analyses that intentionally avoided inferred race labels. In the global step-up analysis, the Turkey-linked subgroup is small ($n=57$) but shows a positive observed-minus-expected gap of +6.7 percentage points rather than a negative one (Fig. 12). The target-league analysis produces a similar pattern (Fig. 13): Turkey-linked players move into the Bundesliga at a much higher observed rate than expected (+19.3 percentage points), while non-EU players move into Serie A slightly more often than expected (+2.8 percentage points). These are descriptive comparisons, not causal claims, and the small subgroup sizes matter. Still, they do not support a simple story of direct under-attainment for the specific groups we could measure defensibly.
+
+\paragraph*{Selection-threshold interpretation.} The most suggestive milestone-3 extension is the new Serie A selection-threshold check (Fig. 14). Among Serie A arrivals with EU-status metadata, we define elite entrants as those in the top quartile of transfer fees, corresponding here to fees above 2 million euros. Non-EU players have an observed elite-entry rate of 38.4\% versus an expected rate of 27.8\%, a positive gap of +10.6 percentage points. EU players show the opposite pattern: 25.2\% observed versus 26.9\% expected, a gap of -1.6 percentage points. This pattern is consistent with a stronger selection threshold for non-EU entrants. In other words, conditional on reaching Serie A, non-EU players appear more concentrated among the higher-fee arrivals than comparable EU players. That does not identify the mechanism. It could reflect institutional barriers, scouting selectivity, visa constraints, or self-selection into more visible transfer cases. But it is more consistent with a threshold story than with a story of straightforward fee discrimination within the observed arrivals.
+
+\section*{Discussion}
+
+The most important substantive result of this paper is arguably not a positive finding but a disciplined negative one. We set out to test whether tactical intensity in a player's origin league helps explain the fee that player commands in the destination market. In our current design, it does not. The OLS coefficient is small, negative, and not statistically significant, while the matching result is too diagnostically fragile to support a causal claim. Given the warning we received during milestone feedback, this distinction matters. Our evidence does not prove the absence of an effect. It shows that we failed to detect one robustly with transfer fees, partial origin-league coverage, and a relatively coarse pressure measure.
+
+At the same time, the project is far from empty. The network results are stable and interpretable. The transfer market does appear to be organized around asymmetrical migration roles, with the Championship functioning as a major sink, the Bundesliga as a strong source, and the Eredivisie as a broker. Repeated player corridors reinforce that these patterns are not merely aggregate accounting artifacts. This is valuable because it shows that the market's structure can be recovered without assuming it in advance.
+
+The explainable-model extension further clarifies why the main hypothesis may have underperformed. Transfer fees seem to reflect destination context, age, and time much more than our origin-pressure proxy. This is not especially surprising: destination leagues differ sharply in spending power, media exposure, and reputational hierarchy. Once a player is already inside the market, those factors may swamp any developmental signal carried by origin-league tactical intensity. Future work could test this more directly by replacing fees with outcomes closer to realized integration, such as minutes played, appearances, or performance ratings in the destination club.
+
+The metadata extensions pushed the paper in a more original direction. We chose not to infer race or ethnicity from names or images because doing so would manufacture sensitive data and undermine the paper's credibility. Instead, we fetched nationality, birth-country, and EU-status metadata from a public player-profile source and built descriptive subgroup checks around those variables. These checks did not reveal a negative signed gap for the measured Turkey-linked or non-EU groups. However, the Serie A selection-threshold result offers a more nuanced interpretation. If clubs face higher real or perceived barriers when recruiting non-EU players, then the subset of non-EU players who actually arrive may need to be unusually strong, expensive, or otherwise exceptional. That interpretation is consistent with our finding that non-EU entrants are overrepresented in the higher-fee tail once they reach Serie A.
+
+Several limitations remain. First, transfer fee is a proxy for valuation, not a direct measure of sporting success. Second, mapped origin pressure is available for only about one-fifth of the sample. Third, several league pressure values remain estimated rather than fully event-derived. Fourth, the metadata-based analyses are descriptive and depend on imperfect name matching, even though we used conservative birth-year disambiguation and left ambiguous cases blank whenever necessary. Finally, our network is league-level, which means it cannot yet capture club-level policy, ownership, or regulator effects that may shape migration.
+
+The next logical step is therefore not to overstate what we have found, but to refine the measurement strategy. Merging a player-season dataset with minutes played, appearances, or performance metrics would allow us to test whether pressure exposure predicts actual integration rather than market price alone. Extending the origin-league coverage beyond the current seven-league destination frame would strengthen the pressure analysis. And if ethically sourced, audited demographic data became available, the same gap framework could be extended to more sensitive group comparisons without resorting to inference from names or photographs.
+
+In summary, the paper yields three takeaways. First, the European transfer market contains strong and interpretable migration structure. Second, we do not find convincing evidence that origin-league pressure raises transfer fees in our current design. Third, exploratory metadata analyses suggest that some apparent group patterns may be better understood as selection thresholds than as simple price penalties. That combination of results is more cautious than our initial hypothesis, but also more faithful to the evidence.
+
+\bibliography{scibib}
+\bibliographystyle{Science}
+
+\begin{scilastnote}
+\item We thank Professor Talal Rahwan and Professor Bedoor AlShebli for course guidance and milestone feedback. We also thank the public data providers and repository maintainers whose open resources made the analysis reproducible. The metadata-based subgroup analyses in this project are descriptive only and do not infer race or ethnicity from names, images, or nationality.
+\end{scilastnote}
+
+\clearpage
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig1_eda_overview.png}
+\caption{{\bf Fig. 1.} Overview of the transfer dataset from 2010 to 2022. The figure summarizes annual transfer counts, destination-league composition, and the highly skewed distribution of transfer fees, including the large share of zero-fee observations.}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig2_pressure.png}
+\caption{{\bf Fig. 2.} League-level pressure landscape. Event-derived or estimated pressure indices are compared across leagues, and the distribution of destination-minus-origin pressure gaps shows how often transfers move toward more or less tactically intense environments.}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig3_flow_heatmap.png}
+\caption{{\bf Fig. 3.} League-to-league transfer flow heatmap. Cell intensity reflects the number of inbound transfers from each origin league into each destination league, revealing the strongest migration channels in the sample.}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig4_network.png}
+\caption{{\bf Fig. 4.} Directed transfer network among the seven destination leagues. Edge weights reflect transfer counts, and the graph highlights the asymmetric structure of league exchange.}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig5_centrality.png}
+\caption{{\bf Fig. 5.} Centrality and net-flow summary. The figure compares betweenness centrality and net transfer flow by league, showing the Championship as a major importer and the Eredivisie as a gatekeeping broker.}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig6_correlation_matrix.png}
+\caption{{\bf Fig. 6.} Correlation matrix for the main continuous variables. Log transfer fee is only weakly correlated with origin pressure, while destination pressure and pressure gap are more strongly related to one another by construction.}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig7_ols_coefficients.png}
+\caption{{\bf Fig. 7.} OLS coefficient plot with 95\% confidence intervals. The origin-pressure estimate is negative and not statistically significant, while destination-league fixed effects dominate the regression.}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig8_psm.png}
+\caption{{\bf Fig. 8.} Propensity-score matching diagnostics. The figure combines overlap and balance checks for the high-pressure treatment indicator and illustrates why the statistically significant ATT is not treated as clean causal evidence.}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig9_position_heterogeneity.png}
+\caption{{\bf Fig. 9.} Position-specific OLS estimates. Separate regressions for attackers, defenders, midfielders, and goalkeepers show broadly negative coefficients on origin pressure, but none are statistically significant at the conventional 5\% level.}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig10_feature_importance.png}
+\caption{{\bf Fig. 10.} Explainable fee model feature importance. Permutation importance from a random-forest model ranks age, destination pressure, destination league, and season above origin pressure, which contributes negligibly.}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig11_common_support.png}
+\caption{{\bf Fig. 11.} Common-support diagnostic for the matching design. The overlap plot and retained-sample bars show that nearly the entire matched sample lies within common support, indicating weak treatment discrimination rather than a sharply separated design.}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig12_group_gap.png}
+\caption{{\bf Fig. 12.} Exploratory observed-versus-expected step-up gap by supplied metadata group. Using the externally supplied Turkey-linked indicator, the figure compares actual step-up movement rates to rates predicted from observed football variables alone.}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig13_target_league_gap.png}
+\caption{{\bf Fig. 13.} Target-league gap checks based on fetched player metadata. The first panel compares Bundesliga entry rates for Turkey-linked players versus others, and the second compares Serie A entry rates for non-EU versus EU players.}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig14_serie_a_selection_threshold.png}
+\caption{{\bf Fig. 14.} Serie A selection-threshold check by EU status. Among Serie A arrivals, the figure compares observed versus expected rates of appearing in the top quartile of transfer fees, showing that non-EU entrants are disproportionately concentrated among higher-fee arrivals.}
+\end{figure}
+
+\end{document}

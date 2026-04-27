@@ -14,8 +14,9 @@ RANDOM_SEED = 42
 DIR_FIGURES  = "outputs/figures"
 DIR_TABLES   = "outputs/tables"
 DIR_CACHE    = "cache"
+DIR_INPUTS   = "inputs"
 
-for _d in (DIR_FIGURES, DIR_TABLES, DIR_CACHE):
+for _d in (DIR_FIGURES, DIR_TABLES, DIR_CACHE, DIR_INPUTS):
     os.makedirs(_d, exist_ok=True)
 
 # ── Plot palette ──────────────────────────────────────────────────────────────
